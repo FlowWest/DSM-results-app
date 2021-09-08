@@ -22,7 +22,7 @@ server <- function(input, output) {
     annotations <- list( 
       list( 
         x = 0.2,  
-        y = 1.0,  
+        y = 1,  
         text = "2019",  
         xref = "paper",  
         yref = "paper",  
@@ -49,6 +49,7 @@ server <- function(input, output) {
     if (input$results_2019 == T) {
       subplot(plot_2019, plot_2021) %>%
         layout(title = input$Metric,
+               margin = 0.5,
                showlegend = F,
                annotations = annotations)
       
