@@ -7,9 +7,9 @@ server <- function(input, output) {
   })
   
   output$results_plot <- renderPlotly({
-    p_template <- function (data) {
+    p_template <- function (data, pick_col) {
       data %>%
-        plot_ly(y = ~strategy, x = ~value, type = "bar",
+        plot_ly(y = ~strategy, x = ~value, marker = list(color = pick_col), type = "bar",
                           orientation = 'h', 
                           hoverinfo = 'text') %>% 
       layout(yaxis = list(title = list(text ='')),
@@ -19,18 +19,42 @@ server <- function(input, output) {
       config(displayModeBar = FALSE)
     }
     
+    annotations <- list( 
+      list( 
+        x = 0.2,  
+        y = 1.0,  
+        text = "2019",  
+        xref = "paper",  
+        yref = "paper",  
+        xanchor = "center",  
+        yanchor = "bottom",  
+        showarrow = FALSE 
+      ),  
+      list( 
+        x = 0.8,  
+        y = 1,  
+        text = "2021",  
+        xref = "paper",  
+        yref = "paper",  
+        xanchor = "center",  
+        yanchor = "bottom",  
+        showarrow = FALSE 
+      ))
+    
     plot_2019 <- p_template(selected_results() %>%
-      filter(version == 2019))
+      filter(version == 2019), "green")
     plot_2021 <- p_template(selected_results() %>%
-      filter(version == 2021))
+      filter(version == 2021), "blue")
     
     if (input$results_2019 == T) {
       subplot(plot_2019, plot_2021) %>%
-        layout(title = input$Metric)
+        layout(title = input$Metric,
+               showlegend = F,
+               annotations = annotations)
       
     } else {
       plot_2021 %>%
-        layout(title = input$Metric)
+        layout(title = paste0("2021 ", input$Metric))
     }
   })
   
