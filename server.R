@@ -1,53 +1,24 @@
 server <- function(input, output) {
-  selected_scenario <- reactive({
-    scenario_data %>% filter(scenario == toupper(input$Scenario)) 
+  # Filter based on run and 
+  selected_results <- reactive({
+    dsm_results %>% filter(run == input$Run, 
+                           metric == input$Metric)
   })
   
-  output$percent_change_table <- DT::renderDataTable(
-    percent_change %>% filter(Run %in% input$Run) %>% select(-Description),
-    selection = "none",
-    options = list(dom = 'tip', pageLength = 15, bAutoWidth = FALSE)
-    )
-  
-  output$actions_plot <- renderPlotly({
-    if (input$plot_type == "Actions Applied Over Time") {
-      
-      gg <- selected_scenario() %>% 
-        filter(units_of_effort > 0) %>%
-        ggplot(aes(year, units_of_effort, fill = action_type)) +
-        geom_col() +
-        labs(x = "Year", 
-             y = "Units of Effort", 
-             title = paste0("Scenario ", input$Scenario)) +
-        scale_y_continuous(breaks = c(0, 1, 2, 3, 4, 5)) +
-        scale_fill_manual(values =  c("#00A08A", "#5BBCD6","#F2AD00", "#FF0000")) +
-        facet_wrap(~watershed, ncol = 1) +
-        theme_minimal() 
-      
-      height <- ifelse(input$Scenario %in% c("Eleven", "Nine"), 900, 600) # TODO figure out height of plot 9 and 11
-    } else {
-      
-      plot_data <- selected_scenario() %>% 
-        filter(units_of_effort > 0) %>%
-        mutate(acres = ifelse(action_type == "survival", .5 * units_of_effort, 2 * units_of_effort))
-      
-      gg <- plot_data %>% 
-        ggplot(aes(x = watershed, y = acres)) + 
-        geom_col(aes(fill = action_type)) + 
-        labs(x = "Watershed",
-             y = "Total Acres",
-             title = paste0("Scenario ", input$Scenario)) +
-        coord_flip() +
-        scale_fill_manual(values =  c("#00A08A", "#5BBCD6","#F2AD00", "#FF0000")) +
-        theme_minimal()
-      
-      height <- 600
-    }
-    
-    ggplotly(gg) %>% layout(height = height, width = 900)
+  output$results_plot <- renderPlotly({
+    selected_results() %>% 
+      plot_ly(y = ~strategy, x = ~value, type = "bar",
+              orientation = 'h', 
+              hoverinfo = 'text') %>% 
+      layout(title = "Metric", 
+             yaxis = list(title = list(text ='')),
+             xaxis = list(title = list(text ='Utility Score')),
+             barmode = 'stack',
+             legend = list(orientation = 'h')) %>% 
+      config(displayModeBar = FALSE)
   })
   
-  output$text <- renderUI({
-    return(HTML(paste("<strong>", scenario_names[[input$Scenario]], "</strong>", ":", descriptions[[input$Scenario]])))
-  })
+  # output$text <- renderUI({
+  #   return(HTML(paste("<strong>", scenario_names[[input$Scenario]], "</strong>", ":", descriptions[[input$Scenario]])))
+  # })
 } 
