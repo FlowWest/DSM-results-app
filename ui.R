@@ -22,8 +22,12 @@ shinyUI(fluidPage(
         )
       ),
       checkboxInput("results_2019",
-                    "Show 2019 Results")
+                    "Show 2019 Results"),
+      # TODO fix formating
+      withMathJax(),
+      helpText('$$Utility = \\frac{Strategy Value - Min Value}{Max Value - Min Value}$$'),
     ),
+    
     mainPanel(plotlyOutput('results_plot'))
   )
 ))
