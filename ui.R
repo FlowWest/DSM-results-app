@@ -1,34 +1,30 @@
-shinyUI(
-  fluidPage(
-    theme = shinythemes::shinytheme("readable"), 
-    titlePanel("Fall Run DSM Results", windowTitle = "Fall Run DSM Results"),
-    fluidRow(
-      column(width = 5,
-             tags$h4("Percent Change from No Action Baseline"),
-             selectInput("Run", label = "Run", 
-                         choices = c("Fall Run", "Spring Run", "Winter Run"),
-                         multiple = TRUE, selected = "Fall Run"),
-             DT::dataTableOutput("percent_change_table")), 
-      column(width = 5, 
-             tags$h4("Action Type and Units of Effort"),
-             fluidRow(column( width = 3, selectInput("Scenario", 
-                                                     label = "Scenarios", 
-                                                     choices = c('One', 'Two', 'Three', 
-                                                                 'Four', 'Five', 'Six', 
-                                                                 'Seven', 'Eight', 'Nine', 
-                                                                 'Ten', 'Eleven', 'Twelve', 
-                                                                 'Thirteen'))),
-                      column(width = 5, selectInput("plot_type", 
-                                                    label = "Plot Type", 
-                                                    choices = c("Actions Applied Over Time", 
-                                                                "Cummulative Acres of Actions")))),
-             htmlOutput("text"),
-             tags$br(),
-             plotlyOutput("actions_plot"), 
-             
-             
-      )
-    )
+shinyUI(fluidPage(
+  theme = shinythemes::shinytheme("readable"),
+  titlePanel("SIT Decision Support Model Results"),
+  sidebarLayout(
+    sidebarPanel(
+      width = 3,
+      selectInput(
+        "Run",
+        label = "Run",
+        choices = c(
+          "Fall Run" = "Fall",
+          "Spring Run" = "Spring",
+          "Winter Run" = "Winter"
+        )
+      ),
+      selectInput(
+        "Metric",
+        label = "Metric",
+        choices = c(
+          "Natural Production Utility Score",
+          "Juvenile Biomass Utility Score"
+        )
+      ),
+      checkboxInput("results_2019",
+                    "Show 2019 Results")
+    ),
+    mainPanel(plotlyOutput('results_plot'))
   )
-)
+))
 
