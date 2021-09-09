@@ -6,6 +6,7 @@ library(plotly)
 library(stringr)
 library(DT)
 library(DSMscenario)
+
 ## DSM Results -----------------------------------------------------------------
 dsm_results <- read_rds("data/dsm_results.rds")
 
@@ -13,35 +14,44 @@ dsm_results <- read_rds("data/dsm_results.rds")
 # Load strategy dataframe
 strategies_data <- read_rds('data/scenario_data.rds')
 colors <- c("#85D4E3", "#F4B5BD", "#9C964A", "#CDC08C", "#FAD77B")
+pal <-  c("#00A08A", "#5BBCD6","#F2AD00", "#FF0000")
 
-# TODO fix these to reflect new names/descriptions (Need 13)
-descriptions <- c(
-  "Restoration limited to in-channel Upper Sacramento, Butte, Lower Mid Sac, Feather, American, Deer, Battle. and Stanislaus",
-  "Restoration limited to in-channel Upper Sacramento, Butte, Lower Mid Sac, Feather, American, Deer, Clear, and Stanislaus",
-  "Restoration limited to in-channel Upper Sacramento, Butte, Lower Mid Sac, Feather, American, Mokelumne, Clear, and Stanislaus",
-  "Restoration limited to in-channel in Mainstem Sacramento only",
-  "Restoration limited to in-channel Upper Sac, Lower Mid Sac, Cow Creek and Clear",
-  "Restoration limited to in-channel Upper Sac, Lower Mid, and American with some maintenance in Clear and Butte",
-  "Restoration limited to floodplain Upper Sac, Upper Mid, Lower Mid, Lower Sac, and San Joaquin",
-  "Restoration optimized to increase Winter-run population every year (limited to locations where WR occur)",
-  "Restoration optimized to increase Spring-run population every year (limited to locations where SR occur)",
-  "Restoration limited to in-channel equally distributed between Upper Mid, Deer, Butte, Clear, Mill, Battle, Antelope",
-  "Restoration optimized to increase Fall-run population every year (one action in each diversity group)",
-  "Restoration optimized to increase Fall-run population every year (one action in each diversity group)",
-  "Restoration optimized to increase Fall-run population every year (actions limited to Upper Sac, Lower Sac, American, Stanislaus, and Mokelumne)"
-)
+# 2021 descriptions form Megan Cook
+descriptions <- c("Baseline strategy",
+                  'Juvenile perennial habitat restoration focused in upper and lower-mid Sac River; Butte, Deer and Battle Creeks; and the Stanislaus and Feather Rivers',
+                  'Juvenile perennial habitat restoration focused in upper and lower-mid Sac River; Butte, Deer and Clear Creeks; and the Stanislaus and Feather Rivers',
+                  'Juvenile perennial habitat restoration focused in upper and lower-mid Sac River; Butte and Clear Creeks;  and the Stanislaus, Mokelumne, and Feather Rivers',
+                  'Juvenile perennial habitat restoration focused in the mainstem Sac and San Joaquin Rivers',
+                  'Juvenile perennial habitat restoration focused in upper, upper-mid, and lower-mid Sac River and Cow and Clear Creeks',
+                  'Juvenile perennial habitat restoration focused in the upper and lower-mid Sac River; American River; and Clear Creeks with maintaining existing habitat in Clear and Butte Creeks and the Upper Sac River.',
+                  'Juvenile seasonally-inundated habitat restoration focused in the mainstem Sacramento and San Joaquin Rivers',
+                  'Optimal habitat restoration actions for winter run in the mainstem Sac with an emphasis on the Sac River below Red Bluff',
+                  'Optimal habitat restoration actions for spring run in the upper-mid and lower Sac River; Battle, Butte,  Clear, Deer, Mill, and Antelope Creeks;  and the Feather River with an emphasis on the Sac River and Battle, Butte, and  Clear Creeks',
+                  'Optimal habitat restoration actions for spring run in the upper-mid Sac River and Battle, Butte,  Clear, Deer, Mill, and Antelope Creeks;  and the Feather River equally allocated across tributaries',
+                  'Optimal habitat restoration actions for fall run with at least one action per year in a tributary in each diversity group',
+                  'Optimal habitat restoration actions for fall run in the upper and lower Sac River and the American, Stanislaus, and Calaveras Rivers equally allocated across tributaries',
+                  'Optimal habitat restoration actions for fall run in the upper and lower Sac River and the American, Stanislaus, and Mokelumne Rivers equally allocated across tributaries'
+                  )
 
-strategy_names <- c('In-Channel Only - Urkov', 'In-Channel Only - Brown', 'In-Channel Only - Bilski', 
-           'In-Channel Only - Mainstem Sac', 'In-Channel Only - Berry', 'In-Channel Only - Peterson', 
-           'Floodplain Only - Mainstem Sac', 'Winter-run Optimized',
-           'Spring-run Optimized', 'Spring-run In-Channel - Philips',
-           'Fall-run Diversity Group Optimized', 'Fall-run Optimized - Beakes',
-           'Fall-run Optimized - Bilski')
 
-strategy_numbers <- c('One', 'Two', 'Three',
-                      'Four', 'Five', 'Six',
-                      'Seven', 'Eight', 'Nine',
-                      'Ten', 'Eleven', 'Twelve',
-                      'Thirteen')
-names(strategy_names) <- strategy_numbers
-names(descriptions) <- strategy_numbers
+## ---- Place holder description df -------####
+strategy_numbers <- c("Baseline", "Strategy 01", "Strategy 02", "Strategy 03",
+                      "Strategy 04", "Strategy 05", "Strategy 06", "Strategy 07",
+                      "Strategy 08", "Strategy 09", "Strategy 10", "Strategy 11",
+                      "Strategy 12", "Strategy 13")
+strategy_desc <- as.data.frame(descriptions) %>%
+  cbind(strategy_numbers)
+
+
+## Strategies tab --------------------------------------------------------------
+strategy_popup_labels <- strategy_numbers[-1]
+
+popup_label_numbers <- c('One', 'Two', 'Three',
+                         'Four', 'Five', 'Six',
+                         'Seven', 'Eight', 'Nine',
+                         'Ten', 'Eleven', 'Twelve',
+                         'Thirteen')
+
+names(strategy_popup_labels) <- popup_label_numbers
+names(descriptions) <- popup_label_numbers
+
