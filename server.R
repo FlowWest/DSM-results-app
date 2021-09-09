@@ -5,7 +5,7 @@ server <- function(input, output) {
         filter(run == input$Run, 
                metric == input$Metric) 
   })
-  
+  # For side by side results plots 
   output$results_plot <- renderPlotly({
     p_template <- function (data, pick_col) {
       data %>%
@@ -62,96 +62,42 @@ server <- function(input, output) {
 
   })
   # For stacked plots ----------------------------------------------------------
-  # 2021 Plot 
+  ## 2021 Plot
   # output$results_plot <- renderPlotly({
-  #     p_template <- function (data, pick_col) {
-  #       data %>%
-  #         plot_ly(y = ~strategy, x = ~value, marker = list(color = pick_col), 
+  #   selected_results() %>%
+  #     filter(version == 2021) %>%
+  #         plot_ly(y = ~strategy, x = ~value, marker = list(color = "blue"),
   #                 type = "bar",
-  #                 orientation = 'h', 
-  #                 hoverinfo = 'text', 
-  #                 source = "subset") %>% 
+  #                 orientation = 'h',
+  #                 hoverinfo = 'text',
+  #                 source = "subset") %>%
   #         layout(yaxis = list(title = list(text =''), xform = xform),
   #                xaxis = list(title = list(text ='Utility Score')),
   #                barmode = 'stack',
-  #                legend = list(orientation = 'h')) %>% 
+  #                legend = list(orientation = 'h'),
+  #                title = paste0("2021 ", input$Metric)) %>%
   #         config(displayModeBar = FALSE)
-  #     }
-  #     
-  #     annotations <- list( 
-  #       list( 
-  #         x = 0.2,  
-  #         y = 1,  
-  #         text = "2019",  
-  #         xref = "paper",  
-  #         yref = "paper",  
-  #         xanchor = "center",  
-  #         yanchor = "bottom",  
-  #         showarrow = FALSE 
-  #       ),  
-  #       list( 
-  #         x = 0.8,  
-  #         y = 1,  
-  #         text = "2021",  
-  #         xref = "paper",  
-  #         yref = "paper",  
-  #         xanchor = "center",  
-  #         yanchor = "bottom",  
-  #         showarrow = FALSE 
-  #       ))
-  #     
-  #     p_template(selected_results() %>%
-  #                  filter(version == 2021), "blue") %>%
-  #       layout(title = paste0("2021 ", input$Metric))
-  #     
   #   })
   # 
-  # # 2019 plot 
+  # # 2019 plot
   # output$plot_2019 <- renderPlotly({
   #   if (input$results_2019 == T) {
-  #   p_template <- function (data, pick_col) {
-  #     data %>%
-  #       plot_ly(y = ~strategy, x = ~value, marker = list(color = pick_col), 
+  #     selected_results() %>%
+  #       filter(version == 2019) %>%
+  #       plot_ly(y = ~strategy, x = ~value, marker = list(color = "green"),
   #               type = "bar",
-  #               orientation = 'h', 
-  #               hoverinfo = 'text', 
-  #               source = "subset") %>% 
+  #               orientation = 'h',
+  #               hoverinfo = 'text',
+  #               source = "subset") %>%
   #       layout(yaxis = list(title = list(text =''), xform = xform),
   #              xaxis = list(title = list(text ='Utility Score')),
   #              barmode = 'stack',
-  #              legend = list(orientation = 'h')) %>% 
+  #              legend = list(orientation = 'h'),
+  #              title = paste0("2019 ", input$Metric)) %>%
   #       config(displayModeBar = FALSE)
-  #   }
-  #   
-  #   annotations <- list( 
-  #     list( 
-  #       x = 0.2,  
-  #       y = 1,  
-  #       text = "2019",  
-  #       xref = "paper",  
-  #       yref = "paper",  
-  #       xanchor = "center",  
-  #       yanchor = "bottom",  
-  #       showarrow = FALSE 
-  #     ),  
-  #     list( 
-  #       x = 0.8,  
-  #       y = 1,  
-  #       text = "2021",  
-  #       xref = "paper",  
-  #       yref = "paper",  
-  #       xanchor = "center",  
-  #       yanchor = "bottom",  
-  #       showarrow = FALSE 
-  #     ))
-  #   
-  #   p_template(selected_results() %>%
-  #                             filter(version == 2019), "green") %>%
-  #       layout(title = paste0("2019 ", input$Metric))
-  #   
-  # }})
+  #   }})
   
-  # Plotly Click Event ---------------------------------------------------------
+  # Plotly Click Event 
   click_data <- reactive({
     event_data("plotly_click", source = "subset")
   })
@@ -164,7 +110,8 @@ server <- function(input, output) {
   output$clicked <- renderText(
     paste0("<strong>", descriptions_text()$strategy_numbers," </strong>", descriptions_text()$descriptions)
   )
-  # Strategies Server ----------------------------------------------------------
+  
+## Strategies Server ----------------------------------------------------------- 
   selected_scenario <- reactive({
     strategies_data %>% filter(scenario == toupper(input$Scenario)) 
   })

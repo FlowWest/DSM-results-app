@@ -8,9 +8,10 @@ shinyUI(fluidPage(
                sidebarLayout(
                  sidebarPanel(
                    width = 3,
+                   # tags$p("Select a species and a metric to view 2021 DSM results. Click the checkbox to display the 2019 DSM result."),
                    selectInput(
                      "Run",
-                     label = "Run",
+                     label = "Select Species",
                      choices = c(
                        "Fall Run" = "Fall",
                        "Spring Run" = "Spring",
@@ -19,7 +20,7 @@ shinyUI(fluidPage(
                    ),
                    selectInput(
                      "Metric",
-                     label = "Metric",
+                     label = "Select Metric",
                      choices = c(
                        "Natural Production Utility Score",
                        "Juvenile Biomass Utility Score"
@@ -29,6 +30,8 @@ shinyUI(fluidPage(
                                  "Show 2019 Results"),
                    # TODO fix formating
                    tags$br(),
+                   tags$hr(),
+                   tags$p("All results are shown as a utility score:"),
                    withMathJax(),
                    helpText(
                      '$$Utility = \\frac{Strategy Value - Min Value}{Max Value - Min Value}$$'
