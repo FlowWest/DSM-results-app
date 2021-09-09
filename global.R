@@ -16,6 +16,7 @@ colors <- c("#85D4E3", "#F4B5BD", "#9C964A", "#CDC08C", "#FAD77B")
 
 # TODO fix these to reflect new names/descriptions (Need 13)
 descriptions <- c(
+  "Baseline",
   "Restoration limited to in-channel Upper Sacramento, Butte, Lower Mid Sac, Feather, American, Deer, Battle. and Stanislaus",
   "Restoration limited to in-channel Upper Sacramento, Butte, Lower Mid Sac, Feather, American, Deer, Clear, and Stanislaus",
   "Restoration limited to in-channel Upper Sacramento, Butte, Lower Mid Sac, Feather, American, Mokelumne, Clear, and Stanislaus",
@@ -43,5 +44,14 @@ strategy_numbers <- c('One', 'Two', 'Three',
                       'Seven', 'Eight', 'Nine',
                       'Ten', 'Eleven', 'Twelve',
                       'Thirteen')
+
 names(strategy_names) <- strategy_numbers
-names(descriptions) <- strategy_numbers
+# names(descriptions) <- strategy_numbers
+
+## ---- Place holder description df -------####
+strategy_numbers_b <- c("Baseline", "Strategy 01", "Strategy 02", "Strategy 03",
+                        "Strategy 04", "Strategy 05", "Strategy 06", "Strategy 07",
+                        "Strategy 08", "Strategy 09", "Strategy 10", "Strategy 11",
+                        "Strategy 12", "Strategy 13")
+strategy_desc <- as.data.frame(descriptions) %>%
+  cbind(strategy_numbers_b)

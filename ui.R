@@ -28,7 +28,8 @@ shinyUI(fluidPage(
       helpText('$$Utility = \\frac{Strategy Value - Min Value}{Max Value - Min Value}$$'),
     ),
     
-    mainPanel(plotlyOutput('results_plot'))
+    mainPanel(plotlyOutput('results_plot'),
+              tableOutput("clicked"))
   )
 ))
 
