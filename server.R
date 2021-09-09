@@ -14,7 +14,7 @@ server <- function(input, output) {
                 orientation = 'h',
                 hoverinfo = 'text',
                 source = "subset") %>%
-      layout(yaxis = list(title = list(text =''), xform = xform),
+      layout(yaxis = list(title = list(text ='')),
              xaxis = list(title = list(text ='Utility Score')),
              barmode = 'stack',
              legend = list(orientation = 'h')) %>%
@@ -44,15 +44,15 @@ server <- function(input, output) {
       ))
 
     plot_2019 <- p_template(selected_results() %>%
-      filter(version == 2019), "green")
+      filter(version == 2019), pal[1])
     plot_2021 <- p_template(selected_results() %>%
-      filter(version == 2021), "blue")
+      filter(version == 2021), pal[2])
 
     if (input$results_2019 == T) {
       subplot(plot_2019, plot_2021,
-              margin = 0.07) %>%
+              margin = 0.05) %>%
         layout(title = input$Metric,
-               margin = 0.5,
+               margin(t = 0.5, b = 0),
                showlegend = F,
                annotations = annotations)
     } else {
@@ -62,7 +62,7 @@ server <- function(input, output) {
 
   })
   # For stacked plots ----------------------------------------------------------
-  ## 2021 Plot
+  # 2021 Plot
   # output$results_plot <- renderPlotly({
   #   selected_results() %>%
   #     filter(version == 2021) %>%
@@ -104,7 +104,7 @@ server <- function(input, output) {
     
   descriptions_text <- reactive({
     strategy_desc %>%
-      filter(strategy_numbers_b %in% click_data()$y)
+      filter(strategy_numbers %in% click_data()$y)
   })
   ## display clicked points
   output$clicked <- renderText(
@@ -203,7 +203,7 @@ server <- function(input, output) {
     
   })
   
-  output$text <- renderUI({
-    return(HTML(paste("<strong>", scenario_names[[input$Scenario]], "</strong>", ":", descriptions[[input$Scenario]])))
+  output$text_2 <- renderUI({
+    return(HTML(paste("<strong>", strategy_popup_labels[[input$Scenario]], "</strong>", ":", descriptions[[input$Scenario]])))
   })
 } 

@@ -33,10 +33,28 @@ dsm_results_2019 <- bind_rows(fall_run_results, spring_run_results, winter_run_r
   mutate(version = 2019)
 
 # Combine 2021 data
-dsm_results_2021 <- bind_rows(fall_run_results, spring_run_results, winter_run_results)
+dsm_results_2021 <- bind_rows(fall_run_results, spring_run_results, winter_run_results) 
 
+order <- rev(c(
+  "Baseline",
+  "Strategy 01",
+  "Strategy 02",
+  "Strategy 03",
+  "Strategy 04",
+  "Strategy 05",
+  "Strategy 06",
+  "Strategy 07",
+  "Strategy 08",
+  "Strategy 09",
+  "Strategy 10",
+  "Strategy 11",
+  "Strategy 12",
+  "Strategy 13" 
+))
 # Combine 2019 and 2021 data
-dsm_results <- bind_rows(dsm_results_2019, dsm_results_2021)
+dsm_results <- bind_rows(dsm_results_2019, dsm_results_2021) %>%
+  mutate(strategy = factor(strategy, levels = order))
+
 write_rds(dsm_results, "data/dsm_results.rds")
 
 # Strategies -------------------------------------------------------------------

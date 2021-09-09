@@ -30,6 +30,7 @@ shinyUI(fluidPage(
                                  "Show 2019 Results"),
                    # TODO fix formating
                    tags$br(),
+                   tags$br(),
                    tags$hr(),
                    tags$p("All results are shown as a utility score:"),
                    withMathJax(),
@@ -39,9 +40,8 @@ shinyUI(fluidPage(
                  ),
                  
                  mainPanel(plotlyOutput('results_plot'),
-                           tags$br(),
                            tableOutput("clicked"),
-                           tags$br(),
+                           # tags$br(),
                            plotlyOutput("plot_2019"))
                )
              ),
@@ -66,7 +66,7 @@ shinyUI(fluidPage(
                                              'Thirteen')),
                      plotlyOutput("cumulative_acres_plot"), 
                      tags$br(),
-                     htmlOutput("text"),
+                     htmlOutput("text_2"),
                      tags$hr()),
                    tags$br(),
                  ),

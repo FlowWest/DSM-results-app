@@ -36,11 +36,22 @@ descriptions <- c("Baseline strategy",
 
 ## ---- Place holder description df -------####
 strategy_numbers <- c("Baseline", "Strategy 01", "Strategy 02", "Strategy 03",
-                        "Strategy 04", "Strategy 05", "Strategy 06", "Strategy 07",
-                        "Strategy 08", "Strategy 09", "Strategy 10", "Strategy 11",
-                        "Strategy 12", "Strategy 13")
+                      "Strategy 04", "Strategy 05", "Strategy 06", "Strategy 07",
+                      "Strategy 08", "Strategy 09", "Strategy 10", "Strategy 11",
+                      "Strategy 12", "Strategy 13")
 strategy_desc <- as.data.frame(descriptions) %>%
-  cbind(strategy_numbers_b)
+  cbind(strategy_numbers)
 
 
+## Strategies tab --------------------------------------------------------------
+strategy_popup_labels <- strategy_numbers[-1]
+
+popup_label_numbers <- c('One', 'Two', 'Three',
+                         'Four', 'Five', 'Six',
+                         'Seven', 'Eight', 'Nine',
+                         'Ten', 'Eleven', 'Twelve',
+                         'Thirteen')
+
+names(strategy_popup_labels) <- popup_label_numbers
+names(descriptions) <- popup_label_numbers
 
