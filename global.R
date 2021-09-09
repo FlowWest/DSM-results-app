@@ -16,7 +16,7 @@ strategies_data <- read_rds('data/scenario_data.rds')
 colors <- c("#85D4E3", "#F4B5BD", "#9C964A", "#CDC08C", "#FAD77B")
 pal <-  c("#00A08A", "#5BBCD6","#F2AD00", "#FF0000")
 
-# TODO fix these to reflect new names/descriptions (Need 13)
+# 2021 descriptions form Megan Cook
 descriptions <- c("Baseline strategy",
                   'Juvenile perennial habitat restoration focused in upper and lower-mid Sac River; Butte, Deer and Battle Creeks; and the Stanislaus and Feather Rivers',
                   'Juvenile perennial habitat restoration focused in upper and lower-mid Sac River; Butte, Deer and Clear Creeks; and the Stanislaus and Feather Rivers',
@@ -42,7 +42,5 @@ strategy_numbers <- c("Baseline", "Strategy 01", "Strategy 02", "Strategy 03",
 strategy_desc <- as.data.frame(descriptions) %>%
   cbind(strategy_numbers_b)
 
-
-## Strategies ------------------------------------------------------------------
 
 
