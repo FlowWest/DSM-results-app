@@ -1,6 +1,6 @@
-shinyUI(fluidPage(
-  theme = shinythemes::shinytheme("lumen"),
+shinyUI(
   navbarPage("SIT DSM Results", id = "main_navbar",
+             theme = shinythemes::shinytheme("lumen"),
              tabPanel(
                "Results",
                tags$h2("Decision Support Model Results for SIT Canidate Restoration Strategies"),
@@ -78,5 +78,5 @@ shinyUI(fluidPage(
                      plotlyOutput('Watershed_graph'))
                  ))
              ))
-))
+)
 
