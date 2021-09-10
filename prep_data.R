@@ -29,8 +29,27 @@ winter_run_results <- read_excel('data-raw/2021_winter-run-simulation-results.xl
 # TODO add Late Fall Run Results 
 
 # TODO add in real 2019 
-dsm_results_2019 <- bind_rows(fall_run_results, spring_run_results, winter_run_results) %>%
-  mutate(version = 2019)
+dsm_results_2019 <- read_excel('data-raw/NTRS utilities.xlsx', sheet = "Utilities") %>% 
+  mutate(strategy = paste0("Strategy 0", `Strategy...1`),
+         strategy = case_when(strategy == "Strategy 00" ~ "Baseline",
+                              strategy == "Strategy 010" ~ "Strategy 10",
+                              strategy == "Strategy 011" ~ "Strategy 11",
+                              strategy == "Strategy 012" ~ "Strategy 12",
+                              strategy == "Strategy 013" ~ "Strategy 13",
+                              T ~ strategy)) %>%
+  select(-c(`Strategy...1`,`Strategy...5`)) %>%
+  pivot_longer(Fall:`U(Spring)`,
+               names_to = "run") %>%
+  mutate(metric = case_when(grepl("U", run) ~ "Natural Production Utility Score",
+                            T ~ "Total Natural Production"),
+         run = case_when(run == "U(fall)" ~ "Fall",
+                         run == "U(Winter)" ~ "Winter",
+                         run == "U(Spring)" ~ "Spring",
+                         T ~ run),
+         version = 2019)
+  
+# dsm_results_2019 <- bind_rows(fall_run_results, spring_run_results, winter_run_results) %>%
+#   mutate(version = 2019)
 
 # Combine 2021 data
 dsm_results_2021 <- bind_rows(fall_run_results, spring_run_results, winter_run_results) 
