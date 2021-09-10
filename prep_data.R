@@ -29,7 +29,14 @@ winter_run_results <- read_excel('data-raw/2021_winter-run-simulation-results.xl
 # TODO add Late Fall Run Results 
 
 # TODO add in real 2019 
-dsm_results_2019 <- read_excel('data-raw/NTRS utilities.xlsx', sheet = "Utilities") %>% 
+dsm_2019_prod <- read_excel('data-raw/NTRS-utilities.xlsx', sheet = "Utilities") %>% 
+  mutate(strategy = paste0("Strategy 0", `Strategy...1`),
+         strategy = case_when(strategy == "Strategy 00" ~ "Baseline",
+                              strategy == "Strategy 010" ~ "Strategy 10",
+                              strategy == "Strategy 011" ~ "Strategy 11",
+                              strategy == "Strategy 012" ~ "Strategy 12",
+                              strategy == "Strategy 013" ~ "Strategy 13",
+                              T ~ strategy)) %>% 
   mutate(strategy = paste0("Strategy 0", `Strategy...1`),
          strategy = case_when(strategy == "Strategy 00" ~ "Baseline",
                               strategy == "Strategy 010" ~ "Strategy 10",
@@ -45,8 +52,26 @@ dsm_results_2019 <- read_excel('data-raw/NTRS utilities.xlsx', sheet = "Utilitie
          run = case_when(run == "U(fall)" ~ "Fall",
                          run == "U(Winter)" ~ "Winter",
                          run == "U(Spring)" ~ "Spring",
-                         T ~ run),
-         version = 2019)
+                         T ~ run))
+dsm_2019_juv <- read_excel('data-raw/NRST-juvenile-biomass-utilities.xlsx', sheet = "Juvenile biomass") %>%
+  mutate(strategy = case_when(Strategy == "Strategy 1" ~ "Strategy 01",
+                              Strategy == "Strategy 2" ~ "Strategy 02",
+                              Strategy == "Strategy 3" ~ "Strategy 03",
+                              Strategy == "Strategy 4" ~ "Strategy 04",
+                              Strategy == "Strategy 5" ~ "Strategy 05",
+                              Strategy == "Strategy 6" ~ "Strategy 06",
+                              Strategy == "Strategy 7" ~ "Strategy 07",
+                              Strategy == "Strategy 8" ~ "Strategy 08",
+                              Strategy == "Strategy 9" ~ "Strategy 09",
+                              T ~ Strategy)) %>%
+  pivot_longer(cols = Winter:Spring,
+               names_to = "run") %>%
+  mutate(metric = "Juvenile Biomass Utility Score")
+  
+dsm_results_2019 <- rbind(dsm_2019_prod,
+                          select(dsm_2019_juv, -Strategy)) %>%
+  mutate(version = 2019)
+
   
 # dsm_results_2019 <- bind_rows(fall_run_results, spring_run_results, winter_run_results) %>%
 #   mutate(version = 2019)
