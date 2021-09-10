@@ -3,7 +3,7 @@ shinyUI(
              theme = shinythemes::shinytheme("lumen"),
              tabPanel(
                "Results",
-               tags$h2("Decision Support Model Results for SIT Canidate Restoration Strategies"),
+               tags$h2("Decision Support Model Results for SIT Candidate Restoration Strategies"),
                tags$br(),
                sidebarLayout(
                  sidebarPanel(
